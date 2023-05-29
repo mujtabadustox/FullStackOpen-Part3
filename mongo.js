@@ -20,20 +20,22 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 
-const person = new Person({
-  id: 2,
-  name: process.argv[3],
-  number: process.argv[4],
-});
+if (process.argv.length > 4) {
+  const person = new Person({
+    id: 3,
+    name: process.argv[3],
+    number: process.argv[4],
+  });
 
-person.save().then((result) => {
-  console.log("note saved!", person);
-  mongoose.connection.close();
-});
-
-// Note.find({}).then((result) => {
-//   result.forEach((note) => {
-//     console.log(note);
-//   });
-//   mongoose.connection.close();
-// });
+  person.save().then(() => {
+    console.log("person saved!", person);
+    mongoose.connection.close();
+  });
+} else {
+  Person.find({}).then((result) => {
+    result.forEach((person) => {
+      console.log(person.name, person.number);
+    });
+    mongoose.connection.close();
+  });
+}
